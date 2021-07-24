@@ -114,11 +114,11 @@ class _SearchState extends State<Search> {
 
   Widget buildSearchList(List<Article> searchArticle) {
     if (searchArticle.isEmpty) {
-      Timer(Duration(milliseconds: 1500), () {
-        setState(() {
-          isTimer = true;
-        });
-      });
+      // Timer(Duration(milliseconds: 1500), () {
+      //   setState(() {
+      //     isTimer = true;
+      //   });
+      // });
       return Center(
         child: (searchArticle.isEmpty && isTimer)
             ? Text('No data found')

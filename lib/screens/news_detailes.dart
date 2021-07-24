@@ -38,7 +38,7 @@ class NewsDetailes extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 20, left: 15),
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: IconButton(
@@ -51,7 +51,7 @@ class NewsDetailes extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 25, right: 20),
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Icon(

@@ -22,9 +22,13 @@ class AppDrawer extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Ahmed',
-                        style: TextStyle(fontSize: 20),
+                      FittedBox(
+                        child: Text(
+                          'Abdelrhman Tarek',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor),
+                        ),
                       ),
                       Text('01152986000'),
                     ],
@@ -33,16 +37,22 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          buildListTile(Icons.home, 'Home'),
-          buildListTile(Icons.search, 'Search'),
-          buildListTile(Icons.bookmark, 'Saved'),
-          buildListTile(Icons.settings, 'Settings'),
+          buildListTile(Icons.home, 'Home', context),
+          buildListTile(Icons.search, 'Search', context),
+          buildListTile(Icons.bookmark, 'Saved', context),
+          buildListTile(Icons.settings, 'Settings', context),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: TextButton(
-                child: Text('Sign out'),
-                onPressed: () {},
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: TextButton(
+                  child: Text(
+                    'Sign out',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {},
+                ),
               ),
             ),
           ),
@@ -51,11 +61,14 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  InkWell buildListTile(IconData icon, String text) {
+  InkWell buildListTile(IconData icon, String text, context) {
     return InkWell(
       onTap: () {},
       child: ListTile(
-        leading: Icon(icon),
+        leading: Icon(
+          icon,
+          color: Theme.of(context).primaryColor,
+        ),
         title: Text(text),
       ),
     );

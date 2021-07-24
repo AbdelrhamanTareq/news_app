@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/providers/data.dart';
 import 'package:news_app/providers/screen.dart';
+import 'package:news_app/screens/login.dart';
 import 'package:provider/provider.dart';
 
 import './screens/home.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
                 MaterialStateColor.resolveWith((states) => Colors.orange),
           ),
         ),
-        home: Home(),
+        home: LoginScreen(),
       ),
     );
   }
