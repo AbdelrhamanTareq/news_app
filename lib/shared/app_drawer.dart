@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/providers/auth.dart';
+import 'package:news_app/shared/cache_helper.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -51,7 +54,11 @@ class AppDrawer extends StatelessWidget {
                     'Sign out',
                     style: TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // Provider.of<Auth>(context, listen: false).deletToken();
+                    CacheHelper.deleteToken('Token');
+                    print('ghghjghj');
+                  },
                 ),
               ),
             ),

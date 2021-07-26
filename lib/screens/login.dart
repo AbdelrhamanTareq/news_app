@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/models/user.dart';
+import 'package:news_app/providers/auth.dart';
+import 'package:news_app/shared/cache_helper.dart';
 import 'package:news_app/shared/components.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,9 +24,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isVisible = false;
 
-  void _save() {
+  bool _isLoading = false;
+
+  void _save(email, password) {
     if (_formkey.currentState.validate()) {
       _formkey.currentState.save();
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        // User user;
+        Provider.of<Auth>(context, listen: false).login(email, password);
+        // CacheHelper.setToken('Token', user.token);
+        // Provider.of<Auth>(context, listen: false)
+        //     .saveToken('Token', user.token);
+      } catch (error) {
+        setState(() {
+          _isLoading = true;
+        });
+        print(error.toString());
+      }
+
+      setState(() {});
+      print('login');
     }
     return;
   }
@@ -68,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: 'Password',
-                    obscureText: _isVisible, //
+                    obscureText: !_isVisible, //
                     prefixIcon: Icon(Icons.vpn_key),
                     suffix: IconButton(
                       icon: Icon(
@@ -125,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 50,
                     color: Theme.of(context).primaryColor,
                     child: TextButton(
-                      onPressed: _save,
+                      onPressed: () => _save(
+                          _emailController.text, _passwordController.text),
                       child: Text(
                         (_isRegistar) ? 'Registar' : 'Login',
                         style: TextStyle(
@@ -134,6 +159,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  if (_isLoading)
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
                 ],
               ),
             ),
