@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:news_app/helpers/dio_helper.dart';
 import 'package:news_app/models/user.dart';
-import 'package:news_app/shared/cache_helper.dart';
+import 'package:news_app/helpers/cache_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {

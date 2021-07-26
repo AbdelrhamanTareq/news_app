@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/providers/auth.dart';
-import 'package:news_app/shared/cache_helper.dart';
+import 'package:news_app/helpers/cache_helper.dart';
+import 'package:news_app/providers/screen.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -40,10 +41,10 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          buildListTile(Icons.home, 'Home', context),
-          buildListTile(Icons.search, 'Search', context),
-          buildListTile(Icons.bookmark, 'Saved', context),
-          buildListTile(Icons.settings, 'Settings', context),
+          buildListTile(Icons.home, 'Home', context, 0),
+          buildListTile(Icons.search, 'Search', context, 1),
+          buildListTile(Icons.bookmark, 'Saved', context, 2),
+          buildListTile(Icons.settings, 'Settings', context, 3),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -68,9 +69,12 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  InkWell buildListTile(IconData icon, String text, context) {
+  InkWell buildListTile(IconData icon, String text, context, int index) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Provider.of<Screen>(context, listen: false).onTabTapped(index);
+        Navigator.pop(context);
+      },
       child: ListTile(
         leading: Icon(
           icon,

@@ -3,7 +3,7 @@ import 'package:news_app/providers/auth.dart';
 import 'package:news_app/providers/data.dart';
 import 'package:news_app/providers/screen.dart';
 import 'package:news_app/screens/login.dart';
-import 'package:news_app/shared/cache_helper.dart';
+import 'package:news_app/helpers/cache_helper.dart';
 import 'package:provider/provider.dart';
 
 import './screens/home.dart';
