@@ -14,6 +14,11 @@ class DioHelper {
   static Future<Response> putData(String url, Map data) async {
     return await dio.put(url, data: data);
   }
+
+  static Future<Response> postData(
+      String url, Map<String, dynamic> data) async {
+    return await dio.post(url, data: data);
+  }
   // final _baseUrl = 'https://60d6c109307c300017a5f49a.mockapi.io/api/v1';
 
 //   Future getData(String endPoint) async {

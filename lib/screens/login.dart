@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/providers/auth.dart';
 import 'package:news_app/helpers/cache_helper.dart';
+import 'package:news_app/screens/home.dart';
 import 'package:news_app/shared/components.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,19 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true;
       });
       try {
-        // User user;
+        if (_isRegistar) {
+          Provider.of<Auth>(context, listen: false)
+              .register(email, password)
+              .then((value) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (contex) => Home(),
+              ),
+            );
+            print('ghjghjghjftytrurtu');
+          });
+        }
         Provider.of<Auth>(context, listen: false).login(email, password);
         // CacheHelper.setToken('Token', user.token);
         // Provider.of<Auth>(context, listen: false)
@@ -123,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.visiblePassword,
                       hintText: 'Confirm Password',
                       prefixIcon: Icon(Icons.vpn_key),
-                      obscureText: _isVisible,
+                      obscureText: !_isVisible,
                       suffix: IconButton(
                         icon: Icon(
                           _isVisible ? Icons.visibility_off : Icons.visibility,

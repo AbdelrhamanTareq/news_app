@@ -17,7 +17,7 @@ class CacheHelper {
     return sharedPreferences.getString(key);
   }
 
-  static deleteToken(String key) {
+  static Future<bool> deleteToken(String key) {
     return sharedPreferences.remove(key);
   }
 }
