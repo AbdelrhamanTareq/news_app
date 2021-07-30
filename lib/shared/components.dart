@@ -25,3 +25,30 @@ navToPage(context, id) => Navigator.push(
         builder: (ctx) => NewsDetailes(id),
       ),
     );
+
+TextFormField buildTextField({
+  @required TextEditingController controller,
+  @required TextInputType keyboardType,
+  @required String hintText,
+  @required Icon prefixIcon,
+  @required Function valdiator,
+  Widget suffix,
+  bool obscureText,
+}) {
+  return TextFormField(
+    validator: valdiator,
+    controller: controller,
+    keyboardType: keyboardType,
+    obscureText: obscureText ?? false,
+    decoration: InputDecoration(
+      hintText: hintText,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffix,
+      border: OutlineInputBorder(
+        borderSide: const BorderSide(
+          width: 1.0,
+        ),
+      ),
+    ),
+  );
+}

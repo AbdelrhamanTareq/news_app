@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:dio/src/response.dart';
+// import 'package:dio/src/response.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:news_app/helpers/dio_helper.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/helpers/cache_helper.dart';
+import 'package:news_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
@@ -53,6 +55,7 @@ class Auth with ChangeNotifier {
           'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password');
       print('User Info: ${response.data}');
       user = User.fromJson(response.data[0]);
+      CacheHelper.setToken('id', user.id);
     } on DioError catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -69,7 +72,8 @@ class Auth with ChangeNotifier {
     }
     return user;
   }
-    Future<User> getUserData(String token) async {
+
+  Future<User> getUserData(String token) async {
     // User user;
     try {
       Response response = await DioHelper.getData(
@@ -90,27 +94,9 @@ class Auth with ChangeNotifier {
         print(e.message);
       }
     }
+    notifyListeners();
     return user;
   }
-  // Future login(String email, String password) async {
-  //   await DioHelper.getData(
-  //           'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password')
-  //       .then((value) {
-  //     // var jsonRespones = value.data;
-
-  //     // User user = User.fromJson(x);
-  //     user = User.fromJson(value.data[0]);
-  //     // CacheHelper.setToken('Token', user.token);
-  //     print(user);
-  //     print('user ${user.token}');
-  //     token = user.token;
-  //     notifyListeners();
-  //     // notifyListeners();
-  //     return user;
-
-  //     // print(value);
-  //   }).catchError((error) => print(error.toString()));
-  // }
 
   Future<void> register(String email, String password) async {
     await DioHelper.postData(
@@ -118,20 +104,70 @@ class Auth with ChangeNotifier {
       'email': email,
       'password': password,
       'token': getRandomString(36),
-      'username': '',
+      'username': 'username',
       'imageUrl': '',
-      'phone': '',
+      'phone': '012345678910',
     }).then((value) {
       user = User.fromJson(value.data);
       notifyListeners();
       print(user.email);
       print(user.token);
+      notifyListeners();
       return user;
       // CacheHelper.setToken('Token', user.token);
     }).catchError((error) {
       notifyListeners();
       print(error);
     });
+  }
+
+  void signOut(context) {
+    CacheHelper.deleteToken('Token').then(
+      (value) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (contex) => LoginScreen(),
+        ),
+      ),
+    );
+  }
+
+  updateUserData(
+    // String token1,
+    String username,
+    String phone,
+    String imageUrl,
+    // Map<String, dynamic> data
+  ) async {
+    var id = CacheHelper.getToken('id');
+    // var token1 = CacheHelper.getToken('Token');
+    try {
+      Response response = await DioHelper.putData(
+        'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users/$id',
+        {
+          'username': username,
+          'phone': phone,
+          'imageUrl': imageUrl,
+        },
+      );
+      print('User update: ${response.data}');
+      user = User.fromJson(response.data);
+    } on DioError catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        print('Dio error!');
+        print('STATUS: ${e.response.statusCode}');
+        print('DATA: ${e.response.data}');
+        print('HEADERS: ${e.response.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        print('Error sending request!');
+        print(e.message);
+      }
+    }
+    notifyListeners();
+    return user;
   }
 
   // void saveToken(String key, String value) async {

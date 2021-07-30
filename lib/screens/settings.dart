@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/providers/auth.dart';
+import 'package:news_app/screens/edit_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/data.dart';
@@ -54,7 +55,10 @@ class Settings extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(0),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Provider.of<Auth>(context, listen: false)
+                                    .signOut(context);
+                              },
                               child: Text(
                                 'Sign Out',
                                 style: TextStyle(
@@ -112,7 +116,14 @@ class Settings extends StatelessWidget {
                     ListTile(
                       leading: Text('Edit Account'),
                       trailing: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => EditScreen(),
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.arrow_right),
                       ),
                     ),

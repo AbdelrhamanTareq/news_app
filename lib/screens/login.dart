@@ -235,31 +235,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     ));
   }
-
-  TextFormField buildTextField({
-    @required TextEditingController controller,
-    @required TextInputType keyboardType,
-    @required String hintText,
-    @required Icon prefixIcon,
-    @required Function valdiator,
-    Widget suffix,
-    bool obscureText,
-  }) {
-    return TextFormField(
-      validator: valdiator,
-      controller: controller,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffix,
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            width: 1.0,
-          ),
-        ),
-      ),
-    );
-  }
 }

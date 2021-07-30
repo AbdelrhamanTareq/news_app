@@ -24,7 +24,14 @@ class Home extends StatelessWidget {
               provider.navToSearch();
             },
             icon: Icon(Icons.search),
-          )
+          ),
+          // test put
+          // IconButton(
+          //   onPressed: () {
+          //     // Provider.of<Auth>(context, listen: false).updateUserData();
+          //   },
+          //   icon: Icon(Icons.add),
+          // ),
         ],
       ),
       drawer: AppDrawer(),

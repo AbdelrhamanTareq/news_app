@@ -61,16 +61,7 @@ class AppDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    // Provider.of<Auth>(context, listen: false).deletToken();
-                    CacheHelper.deleteToken('Token').then(
-                      (value) => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (contex) => LoginScreen(),
-                        ),
-                      ),
-                    );
-                    print('ghghjghj');
+                    Provider.of<Auth>(context, listen: false).signOut(context);
                   },
                 ),
               ),
