@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   void _save(email, password) {
+    User user;
     if (_formkey.currentState.validate()) {
       _formkey.currentState.save();
       setState(() {
@@ -38,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Provider.of<Auth>(context, listen: false)
               .register(email, password)
               .then((value) {
+            CacheHelper.setToken(
+                'Token', Provider.of<Auth>(context, listen: false).user.token);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -46,8 +49,24 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             print('ghjghjghjftytrurtu');
           });
+        } else {
+          Provider.of<Auth>(context, listen: false)
+              .login(email, password)
+              .then((value) {
+            CacheHelper.setToken(
+                'Token', Provider.of<Auth>(context, listen: false).user.token);
+            // if ((Provider.of<Auth>(context, listen: false).user.id) == null) {
+            //   //throw ('password error');
+            // }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (contex) => Home(),
+              ),
+            );
+          });
         }
-        Provider.of<Auth>(context, listen: false).login(email, password);
+
         // CacheHelper.setToken('Token', user.token);
         // Provider.of<Auth>(context, listen: false)
         //     .saveToken('Token', user.token);
@@ -66,9 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('1 ${_emailController.text}');
-    print('1 ${_passwordController.text}');
-    print('1 ${_emailController.text}');
+    print(_isRegistar);
+    // print('1 ${_emailController.text}');
+    // print('1 ${_passwordController.text}');
+    // print('1 ${_emailController.text}');
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.only(top: 40.0),

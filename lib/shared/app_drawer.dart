@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/models/user.dart';
 import 'package:news_app/providers/auth.dart';
 import 'package:news_app/helpers/cache_helper.dart';
 import 'package:news_app/providers/screen.dart';
@@ -8,6 +9,9 @@ import 'package:provider/provider.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //User user;
+    // print('email ${user.email}');
+    print(Provider.of<Auth>(context).user);
     return Drawer(
       child: Column(
         children: [
@@ -21,7 +25,7 @@ class AppDrawer extends StatelessWidget {
                   CircleAvatar(
                     minRadius: 50,
                     backgroundImage:
-                        NetworkImage('https://picsum.photos/250?image=9'),
+                        NetworkImage(Provider.of<Auth>(context).user.imageUrl),
                   ),
                   SizedBox(width: 25),
                   Column(
@@ -29,13 +33,13 @@ class AppDrawer extends StatelessWidget {
                     children: [
                       FittedBox(
                         child: Text(
-                          'Abdelrhman Tarek',
+                          Provider.of<Auth>(context).user.username,
                           style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).primaryColor),
                         ),
                       ),
-                      Text('01152986000'),
+                      Text(Provider.of<Auth>(context).user.phone),
                     ],
                   ),
                 ],

@@ -17,27 +17,24 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final token = CacheHelper.getToken('Token');
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: Screen(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Auth(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Data()
-            ..getArticles()
-            ..getSavedArticles(),
-        ),
-      ],
-      child: Consumer<Auth>(builder: (context, auth, _) {
-        var token = CacheHelper.getToken('Token');
-        print('token $token');
-        return MaterialApp(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: Screen(),
+          ),
+          ChangeNotifierProvider.value(
+            value: (token != null) ? (Auth()..getUserData(token)) : Auth(),
+          ),
+          ChangeNotifierProvider.value(
+              value: Data()
+                ..getArticles()
+                ..getSavedArticles()),
+        ],
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: "Nunito",
@@ -57,8 +54,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: (token != null) ? Home() : LoginScreen(),
-        );
-      }),
-    );
+        ));
   }
 }

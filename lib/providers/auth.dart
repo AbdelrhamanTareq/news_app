@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:dio/dio.dart';
+import 'package:dio/src/response.dart';
 import 'package:flutter/foundation.dart';
 import 'package:news_app/helpers/dio_helper.dart';
 import 'package:news_app/models/user.dart';
@@ -7,6 +9,8 @@ import 'package:news_app/helpers/cache_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
+  User user;
+  var data;
   var _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890-';
   Random _rnd = Random();
@@ -14,23 +18,99 @@ class Auth with ChangeNotifier {
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   String token;
-  void login(String email, String password) {
-    DioHelper.getData(
-            'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password')
-        .then((value) {
-      var jsonRespones = value.data;
-      for (var x in jsonRespones) {
-        User user = User.fromJson(x);
-        CacheHelper.setToken('Token', user.token);
-        print('user ${user.token}');
-        token = user.token;
-        notifyListeners();
-      }
+  // login(String email, String password) async {
+  //   try {
+  //     final response = await DioHelper.getData(
+  //         'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password');
 
-      print(value);
-      notifyListeners();
-    }).catchError((error) => print(error.toString()));
+  //     if (response.statusCode == 200) {
+  //       var jsonRespones = response.data;
+  //       data = jsonRespones;
+  //       print('data = ${jsonRespones}');
+  //       print('data1 = ${data}');
+  //       user = User.fromJson(jsonRespones[0]);
+  //       print('user = ${user.email}');
+  //       // for (var x in jsonRespones) {
+  //       //   articles.add(Article.fromJson(x));
+
+  //       //   notifyListeners();
+  //       // }
+  //       notifyListeners();
+  //       return user;
+  //     }
+  //     //  else {
+  //     //   notifyListeners();
+  //     //   throw Exception('Failed to load data');
+  //     // }
+  //   } catch (error) {
+  //     print(error.toString());
+  //   }
+  // }
+  Future<User> login(String email, String password) async {
+    // User user;
+    try {
+      Response response = await DioHelper.getData(
+          'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password');
+      print('User Info: ${response.data}');
+      user = User.fromJson(response.data[0]);
+    } on DioError catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        print('Dio error!');
+        print('STATUS: ${e.response?.statusCode}');
+        print('DATA: ${e.response?.data}');
+        print('HEADERS: ${e.response?.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        print('Error sending request!');
+        print(e.message);
+      }
+    }
+    return user;
   }
+    Future<User> getUserData(String token) async {
+    // User user;
+    try {
+      Response response = await DioHelper.getData(
+          'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?token=$token');
+      print('User Info: ${response.data}');
+      user = User.fromJson(response.data[0]);
+    } on DioError catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        print('Dio error!');
+        print('STATUS: ${e.response?.statusCode}');
+        print('DATA: ${e.response?.data}');
+        print('HEADERS: ${e.response?.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        print('Error sending request!');
+        print(e.message);
+      }
+    }
+    return user;
+  }
+  // Future login(String email, String password) async {
+  //   await DioHelper.getData(
+  //           'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password')
+  //       .then((value) {
+  //     // var jsonRespones = value.data;
+
+  //     // User user = User.fromJson(x);
+  //     user = User.fromJson(value.data[0]);
+  //     // CacheHelper.setToken('Token', user.token);
+  //     print(user);
+  //     print('user ${user.token}');
+  //     token = user.token;
+  //     notifyListeners();
+  //     // notifyListeners();
+  //     return user;
+
+  //     // print(value);
+  //   }).catchError((error) => print(error.toString()));
+  // }
 
   Future<void> register(String email, String password) async {
     await DioHelper.postData(
@@ -42,13 +122,16 @@ class Auth with ChangeNotifier {
       'imageUrl': '',
       'phone': '',
     }).then((value) {
-      User user = User.fromJson(value.data);
+      user = User.fromJson(value.data);
+      notifyListeners();
       print(user.email);
       print(user.token);
-      CacheHelper.setToken('Token', user.token);
-
+      return user;
+      // CacheHelper.setToken('Token', user.token);
+    }).catchError((error) {
       notifyListeners();
-    }).catchError((error) => print(error));
+      print(error);
+    });
   }
 
   // void saveToken(String key, String value) async {

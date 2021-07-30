@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/models/user.dart';
+import 'package:news_app/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/data.dart';
@@ -7,6 +9,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _provider = Provider.of<Data>(context);
+    User user = Provider.of<Auth>(context).user;
 
     return SingleChildScrollView(
       // physics: ScrollPhysics,
@@ -25,9 +28,11 @@ class Settings extends StatelessWidget {
                   // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CircleAvatar(
-                      radius: 40,
+                      radius: 50,
                       backgroundImage: NetworkImage(
-                        'https://ichef.bbci.co.uk/news/1024/branded_news/A271/production/_119158514_mediaitem119158513.jpg',
+                        user.imageUrl
+                        //'https://ichef.bbci.co.uk/news/1024/branded_news/A271/production/_119158514_mediaitem119158513.jpg'
+                        ,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -37,8 +42,12 @@ class Settings extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Mickale Faraday'),
-                          Text('mickalefaraday@gmail.com'),
+                          Text(user.username
+                              // 'Mickale Faraday'
+                              ),
+                          Text(user.email
+                              // 'mickalefaraday@gmail.com'
+                              ),
                           SizedBox(
                             height: 0,
                           ),
