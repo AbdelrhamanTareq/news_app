@@ -26,91 +26,107 @@ class EditScreen extends StatelessWidget {
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  buildTextField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.name,
-                    hintText: 'Username',
-                    prefixIcon: Icon(Icons.supervised_user_circle),
-                    valdiator: (String val) {
-                      if (val.isEmpty) {
-                        return 'Username can\'t be empty';
-                      }
-                      return null;
-                    },
+      body: (_user == null)
+          ? CircularProgressIndicator()
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        buildTextField(
+                          context: context,
+                          controller: _usernameController,
+                          keyboardType: TextInputType.name,
+                          hintText: 'Username',
+                          prefixIcon: Icon(
+                            Icons.supervised_user_circle,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          valdiator: (String val) {
+                            if (val.isEmpty) {
+                              return 'Username can\'t be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        buildTextField(
+                          context: context,
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
+                          hintText: 'Phone',
+                          prefixIcon: Icon(
+                            Icons.phone,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          valdiator: (String val) {
+                            if (val.isEmpty) {
+                              return 'Phone can\'t be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        buildTextField(
+                          context: context,
+                          controller: _imageController,
+                          keyboardType: TextInputType.url,
+                          hintText: 'Image url',
+                          prefixIcon: Icon(
+                            Icons.image,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          valdiator: (String val) {
+                            if (val.isEmpty) {
+                              return 'Image url can\'t be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildTextField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    hintText: 'Phone',
-                    prefixIcon: Icon(Icons.phone),
-                    valdiator: (String val) {
-                      if (val.isEmpty) {
-                        return 'Phone can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildTextField(
-                    controller: _imageController,
-                    keyboardType: TextInputType.url,
-                    hintText: 'Image url',
-                    prefixIcon: Icon(Icons.image),
-                    valdiator: (String val) {
-                      if (val.isEmpty) {
-                        return 'Image url can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              width: double.infinity,
-              height: 50,
-              color: Theme.of(context).primaryColor,
-              child: TextButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    _provider.updateUserData(
-                      // token,
-                      _usernameController.text,
-                      _phoneController.text.toString(),
-                      _imageController.text,
-                    );
-                    // Navigator.pop(context);
-                  }
-                },
-                child: Text(
-                  'Update',
-                  style: TextStyle(color: Colors.white),
                 ),
-              ),
+                SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    color: Theme.of(context).primaryColor,
+                    child: TextButton(
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          _provider.updateUserData(
+                            // token,
+                            _usernameController.text,
+                            _phoneController.text.toString(),
+                            _imageController.text,
+                          );
+                          await _provider
+                              .getUserData(CacheHelper.getToken('Token'));
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text(
+                        'Update',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

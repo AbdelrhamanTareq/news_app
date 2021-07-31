@@ -26,27 +26,36 @@ navToPage(context, id) => Navigator.push(
       ),
     );
 
-TextFormField buildTextField({
-  @required TextEditingController controller,
-  @required TextInputType keyboardType,
-  @required String hintText,
-  @required Icon prefixIcon,
-  @required Function valdiator,
-  Widget suffix,
-  bool obscureText,
-}) {
+TextFormField buildTextField(
+    {@required TextEditingController controller,
+    @required TextInputType keyboardType,
+    @required String hintText,
+    @required Icon prefixIcon,
+    @required Function valdiator,
+    Widget suffix,
+    bool obscureText,
+    @required context}) {
   return TextFormField(
+    style: Theme.of(context).textTheme.caption,
     validator: valdiator,
     controller: controller,
     keyboardType: keyboardType,
     obscureText: obscureText ?? false,
     decoration: InputDecoration(
       hintText: hintText,
+      // hintStyle: Theme.of(context).textTheme.caption,
       prefixIcon: prefixIcon,
       suffixIcon: suffix,
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
+          width: 1.0,
+          color: Colors.orange,
+        ),
+      ),
       border: OutlineInputBorder(
         borderSide: const BorderSide(
           width: 1.0,
+          color: Colors.orange,
         ),
       ),
     ),

@@ -71,26 +71,39 @@ class News extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      articleModel[i].title,
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 17,
-                      ),
-                    ),
+                    Text(articleModel[i].title,
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyText1
+                        // TextStyle(
+                        //   // color: Colors.black,
+                        //   // fontWeight: FontWeight.w700,
+                        //   // fontSize: 17,
+                        // ),
+                        ),
                     SizedBox(
                       height: 5,
                     ),
                     Row(
                       children: [
-                        Icon(Icons.timer),
+                        Icon(
+                          Icons.timer,
+                          color: Theme.of(context)
+                              .iconTheme
+                              .copyWith(color: Colors.grey)
+                              .color,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
                         Text(
                           DateFormat('yyyy/MM/dd').format(
-                            DateTime.parse(articleModel[i].publishedAt),
+                            DateTime.parse(
+                              articleModel[i].publishedAt,
+                            ),
                           ),
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Spacer(),
                         IconButton(
@@ -102,9 +115,11 @@ class News extends StatelessWidget {
                             color: articleModel[i].isSaved
                                 ? Theme.of(context).primaryColor
                                 : Colors.black,
-                            onPressed: () {
+                            onPressed: () async {
                               Provider.of<Data>(context, listen: false)
                                   .saveArticle(articleModel[i].id, i: i);
+                              // await Provider.of<Data>(context, listen: false)
+                              //     .getArticles();
                             })
                         // color: Colors.white,
                       ],

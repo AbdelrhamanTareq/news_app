@@ -104,11 +104,8 @@ class NewsDetailes extends StatelessWidget {
                             thickness: 2.0,
                           ),
                           Expanded(
-                            child: Text(
-                              _article.title,
-                              style: TextStyle(
-                                  fontSize: 35, fontWeight: FontWeight.bold),
-                            ),
+                            child: Text(_article.title,
+                                style: Theme.of(context).textTheme.headline4),
                           ),
                         ],
                       ),

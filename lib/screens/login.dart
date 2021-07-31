@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   buildTextField(
+                    context: context,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'E-mail',
@@ -122,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   buildTextField(
+                    context: context,
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: 'Password',
@@ -152,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   if (_isRegistar)
                     buildTextField(
+                      context: context,
                       controller: _confirmController,
                       keyboardType: TextInputType.visiblePassword,
                       hintText: 'Confirm Password',

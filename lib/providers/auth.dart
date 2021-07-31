@@ -8,11 +8,11 @@ import 'package:news_app/helpers/dio_helper.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/helpers/cache_helper.dart';
 import 'package:news_app/screens/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   User user;
-  var data;
+  // var data;
   var _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890-';
   Random _rnd = Random();
