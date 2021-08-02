@@ -43,7 +43,7 @@ TextFormField buildTextField(
     obscureText: obscureText ?? false,
     decoration: InputDecoration(
       hintText: hintText,
-      // hintStyle: Theme.of(context).textTheme.caption,
+      // hintStyle: TextStyle(color: Colors.red),
       prefixIcon: prefixIcon,
       suffixIcon: suffix,
       enabledBorder: OutlineInputBorder(

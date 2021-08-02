@@ -47,12 +47,6 @@ class News extends StatelessWidget {
       itemBuilder: (ctx, i) => InkWell(
         onTap: () {
           navToPage(ctx, articleModel[i].id);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (ctx) => NewsDetailes(articleModel[i].id),
-          //   ),
-          // );
         },
         child: Row(
           children: [
@@ -75,55 +69,44 @@ class News extends StatelessWidget {
                         maxLines: 2,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1
-                        // TextStyle(
-                        //   // color: Colors.black,
-                        //   // fontWeight: FontWeight.w700,
-                        //   // fontSize: 17,
-                        // ),
-                        ),
+                        style: Theme.of(context).textTheme.bodyText1),
                     SizedBox(
                       height: 5,
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.timer,
-                          color: Theme.of(context)
-                              .iconTheme
-                              .copyWith(color: Colors.grey)
-                              .color,
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                          DateFormat('yyyy/MM/dd').format(
-                            DateTime.parse(
-                              articleModel[i].publishedAt,
-                            ),
+                    Row(children: [
+                      Icon(
+                        Icons.timer,
+                        color: Theme.of(context)
+                            .iconTheme
+                            .copyWith(color: Colors.grey)
+                            .color,
+                      ),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text(
+                        DateFormat('yyyy/MM/dd').format(
+                          DateTime.parse(
+                            articleModel[i].publishedAt,
                           ),
-                          style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        Spacer(),
-                        IconButton(
-                            icon: Icon(
-                              articleModel[i].isSaved
-                                  ? Icons.bookmark_add
-                                  : Icons.bookmark_border_outlined,
-                            ),
-                            color: articleModel[i].isSaved
-                                ? Theme.of(context).primaryColor
-                                : Colors.black,
-                            onPressed: () async {
-                              Provider.of<Data>(context, listen: false)
-                                  .saveArticle(articleModel[i].id, i: i);
-                              // await Provider.of<Data>(context, listen: false)
-                              //     .getArticles();
-                            })
-                        // color: Colors.white,
-                      ],
-                    )
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      Spacer(),
+                      IconButton(
+                          icon: Icon(
+                            articleModel[i].isSaved
+                                ? Icons.bookmark_add
+                                : Icons.bookmark_border_outlined,
+                          ),
+                          color: articleModel[i].isSaved
+                              ? Theme.of(context).primaryColor
+                              : Colors.black,
+                          onPressed: () async {
+                            Provider.of<Data>(context, listen: false)
+                                .saveArticle(articleModel[i].id, i: i);
+                          })
+                    ])
                   ],
                 ),
               ),
