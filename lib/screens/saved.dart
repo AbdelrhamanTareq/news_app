@@ -50,23 +50,31 @@ class Saved extends StatelessWidget {
                                   maxLines: 2,
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.timer),
+                                    Icon(
+                                      Icons.timer,
+                                      color: Theme.of(context)
+                                          .iconTheme
+                                          .copyWith(color: Colors.black)
+                                          .color,
+                                    ),
+                                    SizedBox(
+                                      width: 3,
+                                    ),
                                     Text(
                                       // '4hr'
                                       DateFormat('yyyy/MM/dd').format(
                                         DateTime.parse(
                                             savedArticle[i].publishedAt),
                                       ),
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
                                     ),
                                     Spacer(),
                                     IconButton(

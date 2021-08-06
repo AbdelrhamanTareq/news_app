@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/helpers/cache_helper.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/providers/auth.dart';
+import 'package:news_app/providers/theme_provider.dart';
+import 'package:news_app/screens/edit_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/data.dart';
@@ -14,11 +17,11 @@ class Settings extends StatelessWidget {
     return SingleChildScrollView(
       // physics: ScrollPhysics,
       child: Container(
-        color: Colors.grey[50],
+        color: Theme.of(context).cardColor,
         child: Column(
           children: [
             Container(
-              color: Colors.white,
+              color: Theme.of(context).canvasColor,
               width: double.infinity,
               height: MediaQuery.of(context).size.height / 4,
               child: Padding(
@@ -54,7 +57,10 @@ class Settings extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(0),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Provider.of<Auth>(context, listen: false)
+                                    .signOut(context);
+                              },
                               child: Text(
                                 'Sign Out',
                                 style: TextStyle(
@@ -72,91 +78,44 @@ class Settings extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).canvasColor,
                 child: Column(
                   children: [
-                    ListTile(
-                      leading: Text('Dark Mode'),
-                      trailing: Switch(
-                          value: _provider.isSwitched,
-                          onChanged: (val) {
-                            _provider.onSwitch(val);
-                          }),
-                    ),
-                    ListTile(
-                      leading: Text('Notification'),
-                      trailing: Switch(
-                          value: _provider.isSwitched,
-                          onChanged: (val) {
-                            _provider.onSwitch(val);
-                          }),
-                    ),
+                    buildSwitchListTile(context, 'Dark mode'),
+                    buildSwitchListTile(context, 'Notification'),
                   ],
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                'Account',
-                textAlign: TextAlign.start,
-              ),
-              width: double.infinity,
-            ),
+            buildHeading('Account', context),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).canvasColor,
                 child: Column(
                   children: [
-                    ListTile(
-                      leading: Text('Edit Account'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_right),
-                      ),
-                    ),
-                    ListTile(
-                      leading: Text('Language'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_right),
-                      ),
-                    ),
+                    buildIconListTile(context, 'Edit Profile', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => EditScreen(),
+                        ),
+                      );
+                    }),
+                    buildIconListTile(context, 'Language', () {}),
                   ],
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                'Privacy and Security',
-                textAlign: TextAlign.start,
-              ),
-              width: double.infinity,
-            ),
-            // Text('Privacy and Security'),
+            buildHeading('Privacy and Security', context),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).canvasColor,
                 child: Column(
                   children: [
-                    ListTile(
-                      leading: Text('Private Account'),
-                      trailing: Switch(
-                          value: _provider.isSwitched,
-                          onChanged: (val) {
-                            _provider.onSwitch(val);
-                          }),
-                    ),
-                    ListTile(
-                      leading: Text('Privacy and Security Help'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_right),
-                      ),
-                    ),
+                    buildSwitchListTile(context, 'Private Account'),
+                    buildSwitchListTile(context, 'Privacy and Security Help'),
                   ],
                 ),
               ),
@@ -164,6 +123,59 @@ class Settings extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  ListTile buildIconListTile(
+      BuildContext context, String text, Function function) {
+    return ListTile(
+      leading: Text(text,
+          style: TextStyle(
+            color: Theme.of(context).dividerColor,
+          )),
+      trailing: IconButton(
+        onPressed: function
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (ctx) => EditScreen(),
+        //   ),
+        // );
+        ,
+        icon: Icon(
+          Icons.arrow_right,
+          color: Theme.of(context).iconTheme.copyWith(color: Colors.grey).color,
+        ),
+      ),
+    );
+  }
+
+  Container buildHeading(String text, context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 15),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Theme.of(context).dividerColor,
+        ),
+        textAlign: TextAlign.start,
+      ),
+      width: double.infinity,
+    );
+  }
+
+  ListTile buildSwitchListTile(BuildContext context, String text) {
+    return ListTile(
+      leading: Text(
+        text,
+        style: TextStyle(color: Theme.of(context).dividerColor),
+      ),
+      trailing: Switch(
+          value: (Provider.of<ThemeProvider>(context).isDark),
+          // CacheHelper.getMode('mode'),
+          onChanged: (state) {
+            Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+          }),
     );
   }
 }

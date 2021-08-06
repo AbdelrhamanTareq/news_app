@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
               .then((value) {
             CacheHelper.setToken(
                 'Token', Provider.of<Auth>(context, listen: false).user.token);
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (contex) => Home(),
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // if ((Provider.of<Auth>(context, listen: false).user.id) == null) {
             //   //throw ('password error');
             // }
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (contex) => Home(),
@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   buildTextField(
+                    context: context,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'E-mail',
@@ -122,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   buildTextField(
+                    context: context,
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: 'Password',
@@ -152,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   if (_isRegistar)
                     buildTextField(
+                      context: context,
                       controller: _confirmController,
                       keyboardType: TextInputType.visiblePassword,
                       hintText: 'Confirm Password',
@@ -234,32 +237,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     ));
-  }
-
-  TextFormField buildTextField({
-    @required TextEditingController controller,
-    @required TextInputType keyboardType,
-    @required String hintText,
-    @required Icon prefixIcon,
-    @required Function valdiator,
-    Widget suffix,
-    bool obscureText,
-  }) {
-    return TextFormField(
-      validator: valdiator,
-      controller: controller,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffix,
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            width: 1.0,
-          ),
-        ),
-      ),
-    );
   }
 }

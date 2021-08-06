@@ -83,11 +83,26 @@ class _SearchState extends State<Search> {
 
                   return;
                 },
+                style: Theme.of(context).textTheme.caption,
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  suffixIcon: Icon(Icons.dashboard_customize),
+                  // hintStyle: Theme.of(context).textTheme.caption,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.all(
+                      const Radius.circular(15.0),
+                    ),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.dashboard_customize,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       const Radius.circular(15.0),

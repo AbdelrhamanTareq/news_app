@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/user.dart';
-import 'package:news_app/providers/auth.dart';
+// import 'package:news_app/providers/auth.dart';
 import 'package:news_app/shared/app_drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     User user;
     final provider = Provider.of<Screen>(context);
-    print('user ${user}');
+    print('user $user');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,12 +24,22 @@ class Home extends StatelessWidget {
               provider.navToSearch();
             },
             icon: Icon(Icons.search),
-          )
+          ),
+          // test put
+          // IconButton(
+          //   onPressed: () {
+          //     // Provider.of<Auth>(context, listen: false).updateUserData();
+          //   },
+          //   icon: Icon(Icons.add),
+          // ),
         ],
       ),
       drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 15,
+        // selectedItemColor: Theme.of(context).primaryColor,
+        // unselectedItemColor: Theme.of(context).primaryColor,
+        // // backgroundColor: Colors.red,
+        // elevation: 15,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           provider.onTabTapped(index);
