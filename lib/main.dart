@@ -20,40 +20,38 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final token = CacheHelper.getToken('Token');
+  // final mode = CacheHelper.getMode('mode') ?? false;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: Screen(),
-          ),
-          ChangeNotifierProvider.value(
-            value: ThemeProvider(),
-          ),
-          ChangeNotifierProvider.value(
-            value: (token != null) ? (Auth()..getUserData(token)) : Auth(),
-          ),
-          ChangeNotifierProvider.value(
-              value: Data()
-                ..getArticles()
-                ..getSavedArticles()),
-        ],
-        child: Consumer<ThemeProvider>(
-          builder: (ctx, thmem, _) => MaterialApp(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Screen(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ThemeProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: (token != null) ? (Auth()..getUserData(token)) : Auth(),
+        ),
+        ChangeNotifierProvider.value(
+            value: Data()
+              ..getArticles()
+              ..getSavedArticles()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (ctx, theme, _) {
+          // print('mode ${mode}');
+          return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme:
-                //  thmem.isLight
-
-                //  ?
-                lightTheme
-            //  : darkTheme,
-            // darkTheme: darkTheme,
-            ,
+            theme: (theme.isDark) ? darkTheme : lightTheme,
             darkTheme: darkTheme,
             home: (token != null) ? Home() : LoginScreen(),
-          ),
-        ));
+          );
+        },
+      ),
+    );
   }
 }

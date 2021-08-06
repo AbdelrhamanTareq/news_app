@@ -123,7 +123,7 @@ class Auth with ChangeNotifier {
 
   void signOut(context) {
     CacheHelper.deleteToken('Token').then(
-      (value) => Navigator.push(
+      (value) => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (contex) => LoginScreen(),

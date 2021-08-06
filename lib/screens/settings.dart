@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/helpers/cache_helper.dart';
 import 'package:news_app/models/user.dart';
 import 'package:news_app/providers/auth.dart';
 import 'package:news_app/providers/theme_provider.dart';
@@ -170,10 +171,10 @@ class Settings extends StatelessWidget {
         style: TextStyle(color: Theme.of(context).dividerColor),
       ),
       trailing: Switch(
-          value: !Provider.of<ThemeProvider>(context).isLight,
+          value: (Provider.of<ThemeProvider>(context).isDark),
+          // CacheHelper.getMode('mode'),
           onChanged: (state) {
-            Provider.of<ThemeProvider>(context, listen: false)
-                .changeTheme(state);
+            Provider.of<ThemeProvider>(context, listen: false).changeTheme();
           }),
     );
   }

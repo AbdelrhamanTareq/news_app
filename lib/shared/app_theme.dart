@@ -49,6 +49,7 @@ final ThemeData lightTheme = ThemeData(
     trackColor: MaterialStateColor.resolveWith((states) => Colors.orange),
     thumbColor: MaterialStateColor.resolveWith((states) => Colors.white),
   ),
+  dividerTheme: DividerThemeData(color: Colors.grey),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -100,4 +101,5 @@ final ThemeData darkTheme = ThemeData(
     trackColor: MaterialStateColor.resolveWith((states) => Colors.grey),
     thumbColor: MaterialStateColor.resolveWith((states) => Colors.orange),
   ),
+  dividerTheme: DividerThemeData(color: Colors.grey),
 );

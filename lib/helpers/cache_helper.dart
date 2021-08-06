@@ -20,4 +20,14 @@ class CacheHelper {
   static Future<bool> deleteToken(String key) {
     return sharedPreferences.remove(key);
   }
+
+  static Future<bool> setMode(String key, bool value) async {
+    return await sharedPreferences.setBool(key, value);
+  }
+
+  static bool getMode(
+    String key,
+  ) {
+    return sharedPreferences.getBool(key);
+  }
 }

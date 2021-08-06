@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
               .then((value) {
             CacheHelper.setToken(
                 'Token', Provider.of<Auth>(context, listen: false).user.token);
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (contex) => Home(),
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // if ((Provider.of<Auth>(context, listen: false).user.id) == null) {
             //   //throw ('password error');
             // }
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (contex) => Home(),
