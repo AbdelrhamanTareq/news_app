@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 // import 'package:dio/src/response.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/helpers/dio_helper.dart';
 import 'package:news_app/models/user.dart';
@@ -54,8 +53,10 @@ class Auth with ChangeNotifier {
       Response response = await DioHelper.getData(
           'https://60d6c109307c300017a5f49a.mockapi.io/api/v1/users?email=$email&password=$password');
       print('User Info: ${response.data}');
-      user = User.fromJson(response.data[0]);
-      CacheHelper.setToken('id', user.id);
+      if (response.data.length != 0) {
+        user = User.fromJson(response.data[0]);
+        CacheHelper.setToken('id', user.id);
+      }
     } on DioError catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.

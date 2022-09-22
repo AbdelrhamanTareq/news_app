@@ -53,17 +53,27 @@ class _LoginScreenState extends State<LoginScreen> {
           Provider.of<Auth>(context, listen: false)
               .login(email, password)
               .then((value) {
-            CacheHelper.setToken(
-                'Token', Provider.of<Auth>(context, listen: false).user.token);
+            print("value = $value");
+            if (value != null) {
+              CacheHelper.setToken('Token',
+                  Provider.of<Auth>(context, listen: false).user.token);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (contex) => Home(),
+                ),
+              );
+            } else {
+              setState(() {
+                _isLoading = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Email or password is wrong")));
+              });
+            }
+
             // if ((Provider.of<Auth>(context, listen: false).user.id) == null) {
             //   //throw ('password error');
             // }
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (contex) => Home(),
-              ),
-            );
           });
         }
 
@@ -90,152 +100,168 @@ class _LoginScreenState extends State<LoginScreen> {
     // print('1 ${_passwordController.text}');
     // print('1 ${_emailController.text}');
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.only(top: 40.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildText(context, 'LOGIN', 5, 30, Theme.of(context).primaryColor),
-          buildText(context, 'Lets get started', 0, 16, Colors.grey),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Form(
-              key: _formkey,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildTextField(
-                    context: context,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: 'E-mail',
-                    obscureText: false,
-                    prefixIcon: Icon(Icons.email),
-                    valdiator: (String val) {
-                      if (!val.contains('@')) {
-                        return 'Please provide valid email';
-                      } else if (val.isEmpty) {
-                        return 'Email can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildTextField(
-                    context: context,
-                    controller: _passwordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    hintText: 'Password',
-                    obscureText: !_isVisible, //
-                    prefixIcon: Icon(Icons.vpn_key),
-                    suffix: IconButton(
-                      icon: Icon(
-                        _isVisible ? Icons.visibility_off : Icons.visibility,
+                  buildText(
+                      context, 'LOGIN', 5, 30, Theme.of(context).primaryColor),
+                  buildText(context, 'Lets get started', 0, 16, Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Form(
+                      key: _formkey,
+                      child: Column(
+                        children: [
+                          buildTextField(
+                            context: context,
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            hintText: 'E-mail',
+                            obscureText: false,
+                            prefixIcon: Icon(Icons.email),
+                            valdiator: (String val) {
+                              if (!val.contains('@')) {
+                                return 'Please provide valid email';
+                              } else if (val.isEmpty) {
+                                return 'Email can\'t be empty';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          buildTextField(
+                            context: context,
+                            controller: _passwordController,
+                            keyboardType: TextInputType.visiblePassword,
+                            hintText: 'Password',
+                            obscureText: !_isVisible, //
+                            prefixIcon: Icon(Icons.vpn_key),
+                            suffix: IconButton(
+                              icon: Icon(
+                                _isVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isVisible = !_isVisible;
+                                });
+                              },
+                            ),
+                            valdiator: (String val) {
+                              if (val.length < 6) {
+                                return 'Passwoed must be at least 6 characters';
+                              } else if (val.isEmpty) {
+                                return 'Password can\'t be empty';
+                              }
+                              return null;
+                            },
+                          ),
+                          if (_isRegistar)
+                            SizedBox(
+                              height: 15,
+                            ),
+                          if (_isRegistar)
+                            buildTextField(
+                              context: context,
+                              controller: _confirmController,
+                              keyboardType: TextInputType.visiblePassword,
+                              hintText: 'Confirm Password',
+                              prefixIcon: Icon(Icons.vpn_key),
+                              obscureText: !_isVisible,
+                              suffix: IconButton(
+                                icon: Icon(
+                                  _isVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isVisible = !_isVisible;
+                                  });
+                                },
+                              ),
+                              valdiator: (String val) {
+                                if (val != _passwordController.text) {
+                                  return 'Password not match';
+                                } else
+                                  return null;
+                              },
+                            ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 50,
+                            color: Theme.of(context).primaryColor,
+                            child: TextButton(
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                                _save(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
+                              },
+                              child: Text(
+                                (_isRegistar) ? 'Registar' : 'Login',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          if (_isLoading)
+                            Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                        ],
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isVisible = !_isVisible;
-                        });
-                      },
                     ),
-                    valdiator: (String val) {
-                      if (val.length < 6) {
-                        return 'Passwoed must be at least 6 characters';
-                      } else if (val.isEmpty) {
-                        return 'Password can\'t be empty';
-                      }
-                      return null;
-                    },
                   ),
-                  if (_isRegistar)
-                    SizedBox(
-                      height: 15,
-                    ),
-                  if (_isRegistar)
-                    buildTextField(
-                      context: context,
-                      controller: _confirmController,
-                      keyboardType: TextInputType.visiblePassword,
-                      hintText: 'Confirm Password',
-                      prefixIcon: Icon(Icons.vpn_key),
-                      obscureText: !_isVisible,
-                      suffix: IconButton(
-                        icon: Icon(
-                          _isVisible ? Icons.visibility_off : Icons.visibility,
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(_isRegistar
+                                ? 'Have an account'
+                                : 'Don\'t have an account?'),
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isRegistar = !_isRegistar;
+                                  });
+                                },
+                                child: Text(
+                                  _isRegistar ? 'LOGIN' : 'REGISTER',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ))
+                          ],
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isVisible = !_isVisible;
-                          });
-                        },
-                      ),
-                      valdiator: (String val) {
-                        if (val != _passwordController.text) {
-                          return 'Password not match';
-                        } else
-                          return null;
-                      },
-                    ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 50,
-                    color: Theme.of(context).primaryColor,
-                    child: TextButton(
-                      onPressed: () => _save(
-                          _emailController.text, _passwordController.text),
-                      child: Text(
-                        (_isRegistar) ? 'Registar' : 'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  if (_isLoading)
-                    Center(
-                      child: CircularProgressIndicator(),
-                    ),
                 ],
               ),
             ),
           ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(_isRegistar
-                        ? 'Have an account'
-                        : 'Don\'t have an account?'),
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _isRegistar = !_isRegistar;
-                          });
-                        },
-                        child: Text(
-                          _isRegistar ? 'LOGIN' : 'REGISTER',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ))
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }
